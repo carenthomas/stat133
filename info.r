@@ -1,0 +1,5 @@
+name = "Caren Thomas"
+SID = "24400000"
+email = "carenthomas@berkeley.edu"
+github_name = "carenthomas"
+status = "enrolled"
