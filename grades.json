@@ -1,0 +1,23 @@
+{
+    "email": "carenthomas@berkeley.edu", 
+    "github_name": "carenthomas", 
+    "grades": {
+        "hw1": {
+            "note": "", 
+            "hash": "236867426d19ae2b2724700a2d26576da706ea2a", 
+            "earned": 20, 
+            "possible": 20, 
+            "penalty": 0, 
+            "parts": {
+                "hw1": {
+                    "possible": 20, 
+                    "earned": 20
+                }
+            }
+        }
+    }, 
+    "login": "carenthomas", 
+    "name": "Caren Thomas", 
+    "status": "enrolled", 
+    "url": "git@github.com:carenthomas/stat133.git"
+}
