@@ -6,8 +6,8 @@
 # calculate the mean and median bsqft of houses in Berkeley. Store these as the
 # variables <mean.bsqft> and <med.bsqft> respectively.
 
-# mean.bsft <- your code here
-# med.bsqft <- your code here
+mean.bsqft <- mean(housing$bsqft, na.rm=TRUE)
+med.bsqft <- median(housing$bsqft, na.rm=TRUE)
 
 
 # For each house in the dataset, calculate the squared difference between its
@@ -15,7 +15,7 @@
 # <bsqft.diffs>. Note that this should be a numeric vector with length equal to
 # the number of observations in the dataset
 
-# bsqft.diffs <- your code here
+bsqft.diffs <- housing$bsqft^2 - med.bsqft^2
 
 
 
@@ -24,16 +24,15 @@
 # 1) houses whose bsqft is strictly greater than <mean.bsqft>:  <bsft.greater>
 # 2) houses whose bsqft is less than or equal to  <mean.bsqft>: <bsqft.less>
 
-# bsqft.greater <- your code here
-# bsqft.less <- your code here
+bsqft.greater <- housing[housing$bsqft > mean.bsqft, colnames(housing)]
+bsqft.less <- housing[housing$bsqft < mean.bsqft, colnames(housing)]
 
 
 # For each of your subsets, create a vector giving the price of each house. Name
 # these variables <rooms.greater.price> and <rooms.less.price>.
 
-# rooms.greater.price <- your code here
-# rooms.less.price <- your code here
-
+rooms.greater.price <- bsqft.greater$price
+rooms.less.price <- bsqft.less$price
 
 
 # Please implement the function priceByRooms. Your function should take the
@@ -49,9 +48,8 @@
 # <br> in the range (inclusive) specified by <room.range>
 
 priceByRooms <- function(room.range, br, prices) {
-
-    # your code here
-
+  prices[br > room.range[[1]] & br < room.range[[2]]]
+  return(mean(prices))
 }
 
 
@@ -60,4 +58,18 @@ priceByRooms <- function(room.range, br, prices) {
 # 1) a title "Housing price vs Number of Rooms"
 # 2) axis labels: "price" and "number of rooms"
 # 3) plotting character set to 20
+
+br.vals <- seq(1, 8, by=1)
+price.avg <- 0
+for (i in br.vals) {
+  price.avg[i] <- AvgPriceByRooms(i, housing$br, housing$prices)
+}
+
+AvgPriceByRooms <- function(num, br, prices) {
+  prices[br == num]
+  return(mean(prices))
+}
+
+plot(x=br.vals, y=price.avg, xlab="Number of Rooms", ylab="Housing Price", main="Housing Price vs. Number of Rooms")
+
 
