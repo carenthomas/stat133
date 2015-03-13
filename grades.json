@@ -19,5 +19,6 @@
     "login": "carenthomas", 
     "name": "Caren Thomas", 
     "status": "enrolled", 
-    "url": "git@github.com:carenthomas/stat133.git"
+    "url": "git@github.com:carenthomas/stat133.git", 
+    "section": "lab3"
 }
