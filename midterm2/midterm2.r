@@ -103,6 +103,9 @@ plot(x=iris$Petal.Length, y=iris$Petal.Width, type="p", xlab="Petal Length", yla
 # [3 pt]
 # Make a scatterplot of ( sepal length / petal length) as a function of index (order)
 # Color the plotting symbol by Species (any 3 colors)
+x.val <- c(1:150)
+y.val <- (iris$Sepal.Length / iris$Petal.Length)
+plot(x=x.val, y=y.val, type="p", xlab="Flower Index", ylab="Sepal Length Divided by Petal Length", col=iris$Species)
 
 
 ##  apply statements
