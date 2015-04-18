@@ -47,8 +47,8 @@ speeches <- readLines(con=file("stateoftheunion1790-2012.txt"))
 # Create the variable [n.speeches] a numeric variable with the number of speeches
 # Question: Does every single *** in the file indicate the beginning of a speech?
 
-breaks <- <your code here>
-n.speeches <- <your code here>
+breaks <- grep("\\*\\*\\*", speeches)
+n.speeches <- length(breaks) - 1
 
 # Hint : look at the file and/or your object speeches, where,
 # each speech has the same format, whererelative to breaks 
@@ -58,7 +58,11 @@ n.speeches <- <your code here>
 # character vector [presidents]
 # with the name of the president delivering the address
 
-presidents <- <your code here>
+getname <- function(val) {
+  return(speeches[[val+3]])
+}
+
+presidents <- lapply(breaks[1:n.speeches], getname)
 
 # Use [speeches] and the vector [breaks] to create [tempDates], 
 # a character vector with the dates of each speech
@@ -67,11 +71,25 @@ presidents <- <your code here>
 # a character vector [speechMo] with the month of each speech
 # Note: you may need to use two lines of code to create one/both variables.
 # and apply may come in handy.
-    
-tempDates <- <your code here>
   
-speechYr <- <your code here>
-speechMo <- <your code here>
+getdate <- function(val) {
+  return(speeches[[val+4]])
+}
+
+tempDates <- lapply(breaks[1:n.speeches], getdate)
+
+getyear <- function(date) {
+  d <- strsplit(date, " ", fixed=TRUE)
+  return(d[[1]][3])
+}
+
+getmonth <- function(date) {
+  d <- strsplit(date, " ", fixed=TRUE)
+  return(d[[1]][1])
+}
+
+speechYr <- lapply(tempDates, getyear)
+speechMo <- lapply(tempDates, getmonth)
 
 # Create a list variable [speechesL] which has the full text of each speech.
 # The variable [speechesL] should have one element for each speech.
@@ -101,7 +119,11 @@ speeches <- gsub("U.S.", "US", speeches)
 
 speechesL <- list()
 for(i in 1:n.speeches){
-  <your code here>
+  start <- breaks[[i]] + 6
+  end <- breaks[[i + 1]] - 2
+  text <- paste(speeches[start:end], sep=".", collapse=" ")
+  text <- strsplit(text, '(?<![^!?.])\\s+', perl=T)
+  speechesL[[i]] <- text
 }
 
 #### Word Vectors 
@@ -144,37 +166,41 @@ speechToWords = function(sentences) {
 
   # Eliminate apostrophes and numbers, 
   # and turn characters to lower case.
-  # <your code here>
+  sentences <- gsub("\\d", "", sentences) 
+  sentences <- gsub("[[:punct:]]", "", sentences)
+  sentences <- tolower(sentences)
     
   # Drop the words (Applause. and Laughter.)
-  # <your code here>
+  sentences <- gsub("Applause", "", sentences) 
+  sentences <- gsub("Laughter", "", sentences) 
 
   
   # Split the text up by blanks and punctuation  (hint: strsplit, unlist)
-  # <your code here>
+  sentences <- unlist(strsplit(sentences, split=" +"))
   
   # Drop any empty words 
-  # <your code here>
+  
+      # previous step ensures there are no empty words
   
   # Use wordStem() to stem the words
   # check the output from wordStem(), do you get all valid words?  any empty ("") strings?
-  # <your code here>
+  sentences <- wordStem(sentences)
   
   # return a character vector of all words in the speech
-
+  return(sentences)
 }
 
 
 #### Apply the function speechToWords() to each speach
 # Create a list, [speechWords], where each element of the list is a vector
 # with the words from that speech.
-speechWords <- <your code here>
+speechWords <- lapply(speechesL, speechToWords)
 
 # Unlist the variable speechWords (use unlist()) to get a list of all words in all speeches,
 # then create:
 # [uniqueWords] : a vector with every word that appears in the speeches in alphabetic order
 
-uniqueWords <- <your code here>
+uniqueWords <- sort(unique(unlist(speechWords)))
 
 # I get 12965 unique words when I run my code - if you don't try to check that all preceeding
 # steps were ok.  Keep the line below in the code, if you get a different number of
