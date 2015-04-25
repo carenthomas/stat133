@@ -110,14 +110,14 @@ repBoot = function(data, B = 1000){
   for (i in c(1:B)) {
     
     x <- oneBoot(data, degree=1)
-    bootY[[i]] <- matrix(coefficients(x))
+    bootY[[i]] <- matrix(coefficients(x), nrow=2, ncol=B)
     f <- matrix(c(x$fitted, data$y - x$fitted), nrow=length(x$fitted), ncol=2)
-    bootR[[i]] <- matrix(coefficients(oneBoot(data, fit=f, degree=1)))
+    bootR[[i]] <- matrix(coefficients(oneBoot(data, fit=f, degree=1)), nrow=2, ncol=B)
     
     x <- oneBoot(data, degree=2)
-    bootYq[[i]] <- coefficients(x)
+    bootYq[[i]] <- matrix(coefficients(x), nrow=3, ncol=B)
     f <- matrix(c(x$fitted, data$y - x$fitted), nrow=length(x$fitted), ncol=2)
-    bootRq[[i]] <- oneBoot(data, fit=f, degree=2)
+    bootRq[[i]] <- matrix(coefficients(oneBoot(data, fit=f, degree=2)), nrow=3, ncol=B)
   }
   
   coeff[[1]] = bootY
@@ -145,6 +145,7 @@ bootPlot = function(x, y, coeff, trueCoeff){
   
   ### Use trueCoeff to add true line/curve - 
   ###  Make the true line/curve stand out
+  
 
 }
 
