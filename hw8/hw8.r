@@ -19,16 +19,35 @@ genBootY = function(x, y, rep = TRUE){
   ### You can assume that the xs are sorted
   ### Hint use tapply here!
   
-
+  y.random <- 0
+  start <- 0
+  end <- 0
+  while (x[[end + 1]] == x[[start]]) {
+    end = end + 1
+  }
+  for (i in c(1:length(y))) {
+    if (x[[i]] != x[[start]]) {
+      start = end + 1
+      while (x[[end + 1]] == x[[start]]) {
+        end = end + 1
+      }
+    }
+    y.random[i] <- sample(y[start:end], 1, replace=rep)
+  }
+  return(y.random)
+  
 }
 
-genBootR = function(fit, err, rep = TRUE){
+genBootR = function(fit, err, rep = FALSE){
   ### Sample the errors 
   ### Add the errors to the fit to create a y vector
   ### Return a vector of y values the same length as fit
   ### HINT: It can be easier to sample the indices than the values
-  
- 
+  y <- 0
+  for (i in c(1:length(fit))) {
+    y[[i]] <- fit[[i]] + sample(err, 1, replace=rep)
+  }
+  return(y)
 }
 
 fitModel = function(x, y, degree = 1){
@@ -37,8 +56,11 @@ fitModel = function(x, y, degree = 1){
   ### y and x are numeric vectors of the same length
   ### Return the coefficients as a vector 
   ### HINT: Take a look at the repBoot function to see how to use lm()
-  
- 
+  if (degree == 1) {
+    coeff <- lm(y ~ x)
+  } else {
+    coeff <- lm(y ~ x + I(x^2))
+  }
   return(coeff)
 }
 
@@ -47,9 +69,13 @@ oneBoot = function(data, fit = NULL, degree = 1){
   ###  OR fit and errors from fit of line to data
   ###  OR fit and errors from fit of quadratic to data  
 
- 
   ### Use fitModel to fit a model to this bootstrap Y 
- 
+  if (fit == NULL) {
+    ynew <- genBootY(data$x, data$y)
+  } else {
+    ynew <- genBootR(fit[,1], fit[,2], degree)
+  }
+  return(fitModel(data$x, ynew, degree))
 }
 
 repBoot = function(data, B = 1000){
@@ -72,9 +98,32 @@ repBoot = function(data, B = 1000){
   ### Format the return value so that you have a list of
   ### length 4, one for each set of coefficients
   ### each element will contain a matrix with B columns
-  ### and two or three rows, depending on whether the 
+  ### and two or three rows, depenxding on whether the 
   ### fit is for a line or a quadratic
   ### Return this list
+  coeff <- 0
+  bootY <- 0
+  bootR <- 0
+  bootYq <- 0
+  bootRq <- 0
+  
+  for (i in c(1:B)) {
+    
+    x <- oneBoot(data, degree=1)
+    bootY[[i]] <- matrix(coefficients(x))
+    f <- matrix(c(x$fitted, data$y - x$fitted), nrow=length(x$fitted), ncol=2)
+    bootR[[i]] <- matrix(coefficients(oneBoot(data, fit=f, degree=1)))
+    
+    x <- oneBoot(data, degree=2)
+    bootYq[[i]] <- coefficients(x)
+    f <- matrix(c(x$fitted, data$y - x$fitted), nrow=length(x$fitted), ncol=2)
+    bootRq[[i]] <- oneBoot(data, fit=f, degree=2)
+  }
+  
+  coeff[[1]] = bootY
+  coeff[[2]] = bootR
+  coeff[[3]] = bootYq
+  coeff[[4]] = bootRq
   
   return(coeff)
 } 
