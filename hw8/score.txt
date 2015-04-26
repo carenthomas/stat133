@@ -1,0 +1,6 @@
+wrong understanding of genBootY   -3
+line 73: Error; use is.null   -1
+Can't run repBoot due to previous errors   -2
+No content for bootPlot  -4
+
+Score: 10/20
