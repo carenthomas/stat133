@@ -1,0 +1,5 @@
+t: wrong table  -2
+boxplot: use sepal length  -2
+cache: return should be vector, not lists. Use sapply  -2
+
+Score: 27/33
