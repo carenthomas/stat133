@@ -66,7 +66,7 @@ for (i in c(1:10)) {
   y[[i]] <- seq(i, 1000, by=i)
 }
 
-u [1 pt]
+# [1 pt]
 # Create [z], a logical vector of length 5000 with entries
 # TRUE and FALSE, where each value has
 #  a probability 0.3 of being TRUE and 0.7 of being FALSE
@@ -202,9 +202,9 @@ plot(y=WorldBank$life.expectancy, x=WorldBank$fertility.rate, type="p", ylab="Li
 # The left plot should include only data from 1960, the right one only from 2014.
 
 bank1960 <- WorldBank[WorldBank$year == 1960, ]
-bank2014 <- WorldBank[WorldBank$year == 2014, ]
+bank2013 <- WorldBank[WorldBank$year == 2013, ]
 plot(y=bank1960$life.expectancy, x=bank1960$fertility.rate, type="p", ylab="Life Expectancy", xlab="Fertility Rate") + abline(v=2.1)
-plot(y=bank2014$life.expectancy, x=bank2014$fertility.rate, type="p", ylab="Life Expectancy", xlab="Fertility Rate") + abline(v=2.1)
+plot(y=bank2013$life.expectancy, x=bank2013$fertility.rate, type="p", ylab="Life Expectancy", xlab="Fertility Rate") + abline(v=2.1)
 
 # [4 pts]
 # Make a histogram of GDP only for observations where the lending rating is "IDA"
@@ -224,7 +224,7 @@ load("rainfallCO.rda")
 # Create [max.rain], a vector where each entry is the _maximum_ element of the
 # corresponding vector in the list rain
 
-max.rain <- lapply(X=rain, FUN=max)
+ max.rain <- lapply(X=rain, FUN=max)
 
     
 # [5 pts]
@@ -239,13 +239,13 @@ maxdiff <- function(x) {
   a <- abs(diff(x[[2]], x[[1]]))
   for (i in c(2:length(x))) {
     if (abs(diff(x[[i]], x[[i-1]])) > a) {
-      a <- (abs(diff(x[[i]], x[[i-1]]))
+      a <- (abs(diff(x[[i]], x[[i-1]]))) # Add ) by Andy
     }
   }
   return(a)
 }
 
-max.diff.rain <- lapply(X=rain, FUN=maxdiff)
+#max.diff.rain <- lapply(X=rain, FUN=maxdiff)# Edited by Andy, caused error
 
 
 # [5 pts]
@@ -264,7 +264,7 @@ prop.rain <- lapply(X=rain, FUN=rainydays)
 # in a separate panel (there will be one empty panel)
 # use an apply statment to the the plotting
 par(mfrow=c(2,3))
-apply(as.vector(rain), par, plot)
+#apply(as.vector(rain), par, plot)# Edited by Andy, caused error
 
 #################################################################
 ##### PART IV : functions [20 pts]
@@ -313,7 +313,7 @@ standardizeVar <- function(m, cols=TRUE){
     m.mean = mean(m[i,])
     m.sd = sd(m[i,])
     m[i,] <- (m[i,] - m.mean)/m.sd
-  }
+  }}
   return(m)
 }
 
