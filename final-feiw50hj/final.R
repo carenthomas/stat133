@@ -263,7 +263,7 @@ prop.rain <- lapply(X=rain, FUN=rainydays)
 # Make a plot with 6 panels and plot the histogram of the rainfall for each weather station
 # in a separate panel (there will be one empty panel)
 # use an apply statment to the the plotting
-par(mfrow=c(2,3))
+#par(mfrow=c(2,3))
 #apply(as.vector(rain), par, plot)# Edited by Andy, caused error
 
 #################################################################
@@ -387,7 +387,7 @@ NumJackpot <- function(k, B) {
     for (j in c(1:k)) {
       player <- sort(sample.int(n=19, size=3, replace=FALSE, prob=NULL))
       if (player == win) {
-        winners <- winners + 1
+         winners <- winners + 1
       }
     }
     n.jackpot[[i]] <- winners
